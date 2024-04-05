@@ -1,0 +1,333 @@
+/*렌더링할 때, 사진 잠깐 로딩되느라 빈칸 보이는데
+그것마저 없앨 방법은 없을까?*/
+
+/*그리고, 한번 맨 위의 상단바를 fix해두면 
+모든 이웃요소들을 상단바의 height만큼 아래로 움직여야하나? */
+
+/*배너리스트 겹칩 문제 어떻게 해결? */
+
+/*사이드바를 fixed해두고, flex 박스도 그에 맞게 크기와 위치를 조절했는데,
+직접 하는 방법 말고 자연스럽게 배치하는 방법은 없나? 
+fixed는 아마 relative와는 거리 계산을 안한다.*/
+
+/*fixed, abs 는 문서 흐름에서 완전 벗어난다
+relative는 다른 static 요소에 의해 최초 위치가 결정되며, 다른 요소들의 위치에 영향을 주진 않는다.
+*/
+
+*{
+  box-sizing: border-box; /*사이즈 계산 편리*/
+
+  /*기본값으로 모든 요소 마진과 패딩 없앰*/
+  margin: 0px;
+  padding: 0px; 
+}
+a{
+  text-decoration: none;
+}
+a:visited{
+  color:black;
+}
+ul{
+  list-style: none;
+}
+/**********************
+ header부분 구현 
+**********************/
+header{
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap; /*당장은 필요없음*/
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1; /*우선순위 - 앞에 먼저 나오도록 함*/
+  width: 100%; /*width 부모요소만큼(전체) 차지*/
+  height: 50px;
+  background-color: greenyellow;
+}
+
+.fa-earth-americas, .fa-bars{
+  font-size: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
+/**********************
+ main부분 구현 
+**********************/
+main{
+  position: relative; 
+  top: 50px;
+  width:100%;
+  background-color: rgba(255, 192, 203, 0.2);
+}
+
+
+/****nav 구현 *******/
+nav.sideNav{
+  position: fixed;  /*nav bar 위치 고정 및 지정*/
+  top:300px;
+  left:10px;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 180px;
+  height: 300px;
+  border: 3px pink solid;
+  background-color: bisque;
+  border-radius: 1rem;
+}
+.sideNav h3{
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.sideNav ul{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  margin-top: 20px;
+  width: 180px;
+  height: 200px;
+  
+  font-weight: bold;
+  font-size: 14px;
+  background-color: violet;
+  border: 3px pink solid;
+  border-radius: .25rem;
+}
+
+.sideNav ul li{
+  background-color: inherit;
+  width: 90%;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.sideNav ul li:hover{
+  background-color: aliceblue;
+  color: rgb(158, 21, 158);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /*수평, 수직, 흐림정도(퍼지는), 색*/
+}
+
+
+
+.sideNav ul li a{ /*중요! 여기서 a의 컬러색을 부모의 컬러 정의로부터 가져와서 변하도록 한다.*/
+  color: inherit; /*inherit을 통해, 부모 요소가 변할 때 그 색을 따라간다*/
+} /*이렇게 해야 list와 a의 색이 동시에 변한다*/
+
+/*
+  혹시 li태그를 눌러도 a의 기능이 나도록 할 수는 없을까?
+  -> 단순하게 li 태그 바깥에 a태그로 둘렀는데 잘 안됨
+*/
+/********************/
+
+/************slideShow 구현*************/
+.slideWindow{
+  position: static; /*기본 값, 일부러 relative에 영향을 준다는 것을 강조하려고 써둠*/
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+
+  width: 100%;
+  height: 200px;
+  border: 2px dotted rgba(138, 218, 106, 0.7);
+
+  overflow: hidden;
+}
+
+.slideWindow .bannerList{
+  display: flex; /*얘까지 해줘야 제대로 배너리스트가 들어감*/
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 100%;
+}
+
+.slideWindow .bannerList img{
+  width: 20vw; /*문제점 : 창의 크기가 작아지면 짤리는대로 ...배너리스트가 되어 이상한게 루프된다*/
+  /*그래서 vw를 사용하니 어느정도 문제가 해결!  -완전 해결은 아님*/
+  /*창을 줄여도 유지 되도록 하고 싶은데.. 일단 배너리스트끼리 겹치는 문제가 해결되어야 한다 */
+  object-fit: fill;
+}
+
+/*배너리스트 겹칩 문제 어떻게 해결? */
+#banner1{
+  animation: sliding1 12s linear infinite; /*12초간 sliding을 일정한 속도로 무한반복*/
+}
+
+#banner2{
+  animation: sliding2 12s linear infinite; /*12초간 sliding을 일정한 속도로 무한반복*/
+}
+
+/*결국 아래의 코드에는 같은 걸 2번 써두긴 했지만, 여러가지 방식을 고민해봄
+  1. 0, 50, 50.01, 100 과 같이 디테일하게 나누어서 해야하나?
+  2. 그냥 배너 1,2 각자 다른 방식으로 움직이게 해야하나?
+  3. 배너1,2 둘다 같은 방식으로 움직이게 해야하나?
+*/
+@keyframes sliding1{
+  from{
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes sliding2{
+  from{
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+/*************************************/
+
+/****Section 구현 *******/
+section.flexSection{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  position: relative;
+  /*top:50px; 이거 있으면 안된다!! 바로 부모요소에서 50px 더 내려가기 때문에, 결국 부모요소의 높이를 넘어선다*/ 
+  left: 210px;
+  width: calc(100vw - 220px); /*width : 뷰포트 다 채우고, 왼쪽으로 움직이는 만큼 뺀 너비*/
+  /*border: 3px solid black;*/
+}
+
+section.flexSection h2{
+  width: 100%; /*옆에 아무도 못 오게*/
+  margin-left: 20px;
+  margin-top: 50px; /*이름 안 가려지게(메뉴바에 의해)*/
+  margin-bottom: 20px;
+  font-size: 40px;
+  color: black;
+}
+
+section.flexSection .productCard{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+
+  width: 18%; /*대략 뷰 포트로 크기를 설정하여 최대 5개가 오도록 만듬 -> 근데, 뷰포트가 달라지면 더 많이 올 수도.. 따라서 그냥 부모요소의 크기를 기준으로 설정*/
+  margin: 10px;
+  
+  border: paleturquoise 2px solid;
+  
+}
+
+/*5개는 디폴트니까 따로 설정 안함*/
+@media screen and (max-width: 1220px) {
+  section.flexSection .productCard {
+    width: 22%; /* 4개의 요소가 보여짐 */
+  }
+}
+
+/* 화면 너비가 900px 미만이 되면 */
+@media screen and (max-width: 900px) {
+  section.flexSection .productCard {
+    width: 28%; /* 3개의 요소가 보여짐 */
+  }
+}
+
+/* 화면 너비가 700px 미만이 되면 */
+@media screen and (max-width: 700px) {
+  section.flexSection .productCard {
+    width: 40%; /* 2개의 요소만 보여짐 */
+  }
+}
+
+/* 화면 너비가 600px 미만이 되면 */
+@media screen and (max-width: 600px) {
+  section.flexSection .productCard {
+    width: 90%; /* 1개의 요소가 보여짐 */
+  }
+}
+
+
+
+/*내컴퓨터 대략 1750이 가장 큰 width (이거 어떻게 계산?
+
+*/
+
+
+
+
+section.flexSection .productCard:hover{
+  animation: boom 1s infinite linear; /*손댔을 때 자연스레 커졌다 작아졌다*/
+}
+
+
+@keyframes boom{
+  0% {
+    transform: scale(1); /*인자 하나만 주면, x-y쌍이 동시에 커짐 , 1이 기본값*/
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+section.flexSection .productCard img{
+  width: 100%; /*부모요소 따라가도록 기본설정*/
+}
+
+section.flexSection .productCard img.album{
+  height: 310px;
+}
+section.flexSection .productCard img.movie{
+  height: 440px;
+}
+section.flexSection .productCard img.travel{
+  height: 200px;
+}
+
+.fa-heart:hover{ /*fontawesome 아이콘 커스텀*/
+  color: red;
+}
+
+.productCard .fa-heart{ /*조금 떨어트려줌*/
+  margin-top: 5px;
+}
+
+/**********************
+ footer부분 구현 
+**********************/
+footer{
+  position: relative;
+  top:50px;
+  width: 100%;
+  height: 300px;
+
+  background-color: aliceblue;
+}
+
+
+
+/* flex 안쓰고 정렬하는 방식(부모를 기준으로, 정 가운데로 움직임)*/
+footer p {
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+
+  /*아니면 vertical-align을 footer에서 사용할 수도 있을 듯..?*/
+}
