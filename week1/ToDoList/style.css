@@ -163,20 +163,20 @@ main > section.todoSection > ul > li {
 }
 
 
-#toDoList{
+.toDoList{
   animation: scaling 2s infinite linear;
 }
 
-#toDoList li{
+.toDoList li{
   background: linear-gradient(to right, #ff007f, #c0c0c0);
 }
 
-#doneList{
+.doneList{
   
   animation: blur 2s infinite linear;
 }
 
-#doneList li{
+.doneList li{
   background-color: rgba(0, 0, 0, 0.3); /* 배경색: 블랙 */
   box-shadow: 0 0 20px rgba(255, 0, 127, 0.5), 0 0 40px rgba(192, 192, 192, 0.8);
 }
