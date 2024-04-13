@@ -150,15 +150,24 @@ nav.sideNav{
 .slideWindow .bannerList{
   display: flex; /*얘까지 해줘야 제대로 배너리스트가 들어감*/
   flex-wrap: nowrap; /*옆으로 가도록*/
-  width: 140vw; /*100%에서 이미지의 크기 * 7개 = 140vw로 바꿈 - 문제 해결*/
+  width: 105vw; /*100%에서 이미지의 크기 * 7개 = 105vw로 바꿈 - 문제 해결*/
   /*width : 100%나 100vw로 하면 문제점: 브라우저상 보이는 부분만 크기로 인식하여, 실제 잘려나가는 크기를 인식 못한다*/
   height: 100%;
 }
 
 /***********문제 해결 : 이제 아무리 창 크기를 줄여도 겹쳐지는 문제 안생김 ***********************/
+/*img크기나 li크기를 %로 하는 것은 크게 문제가 되지 않음.
+단지, 잘려나가는 요소(이번 경우에는 bannerList)의 크기만 확실하게 정해주면 됨.
+단순하게 100%로 하면 자식 요소들의 합이 부모요소들을 넘어서는 걸 제어하기가 어려워짐
+*/
+.slideWindow .bannerList li{
+  width:15vw;
+  height:100%;
+}
 
 .slideWindow .bannerList img{
-  width: 20vw; /*문제점 : 창의 크기가 작아지면 짤리는대로 ...배너리스트가 되어 이상한게 루프된다*/
+  width: 100%; /*문제점 : 창의 크기가 작아지면 짤리는대로 ...배너리스트가 되어 이상한게 루프된다*/
+  height: 100%; /*li 안에 넣었으니까, 해당 높이 따라가게 해주어야함.*/
   /*그래서 vw를 사용하니 어느정도 문제가 해결!  -완전 해결은 아님*/
   /*창을 줄여도 유지 되도록 하고 싶은데.. 일단 배너리스트끼리 겹치는 문제가 해결되어야 한다 */
   object-fit: fill;
@@ -198,7 +207,7 @@ nav.sideNav{
 /*************************************/
 
 /****Section 구현 *******/
-section.flexSection{
+.flexSection{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -211,7 +220,7 @@ section.flexSection{
   /*border: 3px solid black;*/
 }
 
-section.flexSection h2{
+.flexSection h2{
   width: 100%; /*옆에 아무도 못 오게*/
   margin-left: 20px;
   margin-top: 50px; /*이름 안 가려지게(메뉴바에 의해)*/
@@ -220,7 +229,7 @@ section.flexSection h2{
   color: black;
 }
 
-section.flexSection .productCard{
+.flexSection .productCard{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -236,28 +245,28 @@ section.flexSection .productCard{
 
 /*5개는 디폴트니까 따로 설정 안함*/
 @media screen and (max-width: 1220px) {
-  section.flexSection .productCard {
+  .flexSection .productCard {
     width: 22%; /* 4개의 요소가 보여짐 */
   }
 }
 
 /* 화면 너비가 900px 미만이 되면 */
 @media screen and (max-width: 900px) {
-  section.flexSection .productCard {
+  .flexSection .productCard {
     width: 28%; /* 3개의 요소가 보여짐 */
   }
 }
 
 /* 화면 너비가 700px 미만이 되면 */
 @media screen and (max-width: 700px) {
-  section.flexSection .productCard {
+  .flexSection .productCard {
     width: 40%; /* 2개의 요소만 보여짐 */
   }
 }
 
 /* 화면 너비가 600px 미만이 되면 */
 @media screen and (max-width: 600px) {
-  section.flexSection .productCard {
+  .flexSection .productCard {
     width: 90%; /* 1개의 요소가 보여짐 */
   }
 }
@@ -271,7 +280,7 @@ section.flexSection .productCard{
 
 
 
-section.flexSection .productCard:hover{
+.flexSection .productCard:hover{
   animation: boom 1s infinite linear; /*손댔을 때 자연스레 커졌다 작아졌다*/
 }
 
@@ -290,17 +299,17 @@ section.flexSection .productCard:hover{
   }
 }
 
-section.flexSection .productCard img{
+.flexSection .productCard img{
   width: 100%; /*부모요소 따라가도록 기본설정*/
 }
 
-section.flexSection .productCard img.album{
+.flexSection .productCard img.album{
   height: 310px;
 }
-section.flexSection .productCard img.movie{
+.flexSection .productCard img.movie{
   height: 440px;
 }
-section.flexSection .productCard img.travel{
+.flexSection .productCard img.travel{
   height: 200px;
 }
 
