@@ -207,6 +207,24 @@ nav.sideNav{
 /*************************************/
 
 /****Section 구현 *******/
+/*초기에는 all 항목만 보이도록 수정 - js 적용을 위해*/
+#all{
+  display: flex;
+}
+
+#album{
+  display: none;
+}
+
+#movie{
+  display: none;
+}
+
+#travel{
+  display: none;
+}
+
+
 .flexSection{
   display: flex;
   flex-wrap: wrap;

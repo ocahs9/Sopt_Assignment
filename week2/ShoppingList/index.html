@@ -10,7 +10,7 @@
 <body>
   <span id="top"></span> <!--맨 위로 돌아올 수 있도록-->
   <header>
-    <i class="fa-solid fa-earth-americas"></i>
+    <a href="./index.html"><i class="fa-solid fa-earth-americas"></i></a>
     <h1><a  href="#top">Jun Pick</a></h1>
     <i class="fa-solid fa-bars"></i>
     
@@ -19,10 +19,10 @@
     <nav class="sideNav">
       <h3>Pick!</h3>
       <ul>
-        <li class="pickList"><a href="#all">전체</a></li>
-        <li class="pickList"><a href="#album">앨범</a></li>
-        <li class="pickList"><a href="#movie">영화</a></li>
-        <li class="pickList"><a href="#travel">여행</a></li>
+        <li class="pickList" id="allList"><a href="#all">전체</a></li>
+        <li class="pickList" id="albumList"><a href="#album">앨범</a></li>
+        <li class="pickList" id="movieList"><a href="#movie">영화</a></li>
+        <li class="pickList" id="travelList"><a href="#travel">여행</a></li>
       </ul>
     </nav>
 
@@ -359,6 +359,6 @@
     
 
   </footer>
-
+  <script src="./index.js"></script> <!--js연결은 어디가 좋을까?-->
 </body>
 </html>
