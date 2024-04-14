@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jun Pick List_Cart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> <!--폰트어썸 CDN방식으로 IMPORT-->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <span id="top"></span> <!--맨 위로 돌아올 수 있도록-->
+  <header>
+    <a href="./index.html"><i class="fa-solid fa-earth-americas"></i></a>
+    <h1><a  href="#top">Jun Pick - Cart</a></h1>
+    <i id="threeBar" class="fa-solid fa-bars"></i>
+    
+  </header>
+  <main id="cartContainer">
+    <div class="tableContainer">
+      <table id="cartTable">
+        <thead>
+          <tr>
+            <th class="checkCol"><input type="checkbox"></th>
+            <th colspan="2">상품 정보</th>
+            <th>상품 금액</th>
+            <th>카테고리</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody">
+          
+        </tbody>
+      </table>
+    </div>
+    
+  </main>
+
+  
+  
+  <script src="./cart.js"></script> 
+</body>
+</html>

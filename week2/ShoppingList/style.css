@@ -23,13 +23,22 @@ relative는 다른 static 요소에 의해 최초 위치가 결정되며, 다른
 }
 a{
   text-decoration: none;
+  color: black; /*방문하기 전의 기본 색깔*/
 }
 a:visited{
   color:black;
 }
+
 ul{
   list-style: none;
 }
+
+img{
+  display: inline-block;
+  height: 100%;
+  width: auto;
+}
+
 /**********************
  header부분 구현 
 **********************/
@@ -60,6 +69,7 @@ main{
   position: relative; 
   top: 50px;
   width:100%;
+  min-height: calc(100vh - 50px); /*기본적인 크기 정의 (정의 안해두면 자식요소들이 있는만큼만 차지하기 때문*/
   background-color: rgba(255, 192, 203, 0.2);
 }
 
@@ -428,4 +438,63 @@ footer p {
   transform: translate(-50%, -50%); 
 
   /*아니면 vertical-align을 footer에서 사용할 수도 있을 듯..?*/
+}
+
+
+
+
+/************ cart페이지 구현 **********/
+#cartContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center; /*테이블을 가운데에 배치하기 위해서*/
+}
+
+/*
+  스크롤 생성을 위한 div.tableContainer !
+  참고로 table 요소는 컨텐츠의 크기에 맞게 알아서 조절된다.
+  다만, table의 크기를 고정하고 셀이 맞춰가거나
+  아니면 특정 셀만 조금 크기를 조절하는 방법이 존재하긴 한다.
+*/
+.tableContainer {
+  margin-top: 5vh;
+  width:70vw;
+  max-height: 40vh; /*40vh까진 스크롤 안 생기게 만듬*/
+
+  overflow-y: scroll; /*tabel의 지정 height를 넘으면 scroll 생성*/
+
+  border-collapse: collapse;
+  border: 2px solid rgb(140 140 140);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+/* 사용안함 -> 
+.tableContainer .cartTable{
+  table-layout:fixed;
+  width: 100%;
+}
+https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout 
+*/
+
+/*
+  셀 크기를 아무리 정해봤자, 결국 콘텐츠의 크기가 넘쳐나면 그만큼 늘어난다.
+  그러나, 이를 조금 조절할 수 있는 방법은, 콘텐츠의 크기를 부모 요소의 크기를 따라가게
+  width: 100%를 한 뒤, 셀의 width를 정해주는 것이다.
+  아래의 경우 height는 일부로 정하지 않았는데, 만약 height를 설정한다면
+  셀의 height가 셀 콘텐츠의 height 보다 클 땐 반영되고, 작을 땐 반영안된다.
+  이 경우, img의 height: 100%로 해놓아서, 더 작게 해도 반영은 된다.
+*/
+th,td {
+  overflow: hidden;
+  width: 15vw;
+  height: 15vh;
+  border: 1px solid rgb(160 160 160);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+th.checkCol{
+  width: 5vw;
 }

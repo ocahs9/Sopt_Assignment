@@ -1,5 +1,7 @@
 import { ITEMLIST } from "./ITEMLIST.js";
 
+const ITEM_LIST_KEY = "itemList";
+
 //console.dir을 이용하여 객체의 더 자세한 속성들 확인
 const allSection = document.querySelector("#all");
 const albumSection = document.querySelector('#album');
@@ -46,13 +48,18 @@ function removeOtherSection(){
 
 }
 
+function saveStorage()
+{
+  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(allObjects));
+}
+
 //item 선택시 alert 창 뜨게 하는 로직(이벤트 리스너)
 function addCart(e){
   if(confirm("장바구니에 추가하시겠습니까?")){ //yes를 선택할 시 
     //해당 타겟의 id와 같은 id를 갖는 객체의 인덱스를 탐색 (참고 : find는 객체 자체를 반환)
     const findObjIdx = allObjects.findIndex((obj) => obj.id === parseInt(e.currentTarget.id)); 
     allObjects[findObjIdx].cart = true; //해당 배열에서의 객체 cart 속성을 true로 설정
-
+    saveStorage();
     //console.log(allObjects);
   }
   else{ //no를 선택할 시
