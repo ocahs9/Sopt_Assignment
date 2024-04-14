@@ -18,17 +18,45 @@ function deleteGrandParent(e)
   grandParent.remove(); //조부모 삭제
 }
 
+/* 로컬 스토리지에서 값을 가져와서, 체크 박스 체크 해주는 함수
+function initSelect()
+{
+  const init = JSON.stringify(localStorage.getItem(ITEM_LIST_KEY));
+  
+}
+그리고, 전체 체크한 것을 인식하여 userCart가 true로 변하게 만들어야 한다....
+그것만 만들면 모달만 슥 만들면 끝임. 
+나머지는 계산이고.
+*/
+
+function selected(e)
+{
+  const grandParent = (e.currentTarget.parentNode).parentNode;
+  if(e.currentTarget.checked) //체크 되어있는지 확인(boolean값임)
+  {
+    parsedItems[grandParent.id -1].userCart = true;
+  }
+  else{ //체크 안되어 있으면(혹은 체크 해제했으면)
+    parsedItems[grandParent.id -1].userCart = false;
+  }
+  //로컬 스토리지에 갱신
+  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+}
+
 function paintCart(obj)
 {
   if(obj.cart === true)
   {
     const tr = document.createElement("tr");
-    tr.id = obj.id; //나중에 딱 이 부분을 삭제하기 위해 필요함 - 없어도 되나?
+    tr.id = obj.id; //나중에 삭제, 구매 확정에 사용될 예정
 
-    // 첫번째 열 생성 후, tr안에 넣어두는 과정
+    // 첫번째 열(체크버튼) 생성 후, tr안에 넣어두는 과정
     const td1 = document.createElement("td");
     const input = document.createElement("input");
     input.setAttribute("type", "checkbox");
+    
+
+    input.addEventListener("change", selected) //값이 변할경우 이벤트리스너(체크 여부)
     td1.appendChild(input);
     tr.appendChild(td1);
 
@@ -78,3 +106,29 @@ if(savedItemList !== null) //로컬 스토리지에서 가져온 게 비어있�
   const parsedItemList = JSON.parse(savedItemList); //다시 js오브젝트로 변환
   parsedItemList.forEach(paintCart);
 }
+
+//allCheck버튼 누를 때, 다른 체크 박스들 전부 체크로 변경
+const allCheckFunc = (e) => {
+  const checkboxes = document.querySelectorAll("#cartBody input[type ='checkbox']") //cartbody에 있는 모든 checkbox 타입의 input을 배열로 가져옴
+  console.log("올 체크 버튼 바뀜", checkboxes);
+  console.log(e.currentTarget.checked);
+  
+  if(e.currentTarget.checked) //만약 allCheck버튼이 체크되었다면
+  {
+    //모든 체크 버튼들 체크로 변경
+    checkboxes.forEach((box)=>{
+      box.checked = true;
+    })
+  }
+  else{ //체크 안되어 있으면(혹은 체크 해제했으면)
+    //모든 체크 버튼들 체크 해제
+    checkboxes.forEach((box)=>{
+      box.checked = false;
+    })
+  }
+}
+
+const allCheck = document.querySelector("#allCheck");
+allCheck.addEventListener("change", allCheckFunc)
+
+//buy버튼 누를 때 로직 구성

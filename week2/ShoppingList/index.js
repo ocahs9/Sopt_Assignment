@@ -14,7 +14,15 @@ const mainContainer = document.querySelector("#mainContainer");
 // 따라서 미리 필터링 된 요소들을 저장해 둠.
 // 참고로, const로 선언한 배열 자체는 수정(대체)이 불가능하지만,
 // 배열의 '요소'들은 수정이 가능하다.
-const allObjects = ITEMLIST;
+let allObjects;
+const storageObjects = localStorage.getItem(ITEM_LIST_KEY);
+if(storageObjects !== null) //로컬 스토리지에서 가져온 값으로 매번 갱신해줘야함. (아니면 계속 덮어쓰기 되는 버그 발생)
+{
+  allObjects = JSON.parse(storageObjects);
+}
+else{
+  allObjects = ITEMLIST;
+}
 const albumObjects = ITEMLIST.filter((obj) => obj.category === "album"); 
 const movieObjects = ITEMLIST.filter((obj) => obj.category === "movie"); 
 const travelObjects = ITEMLIST.filter((obj) => obj.category === "travel"); 
