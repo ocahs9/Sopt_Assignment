@@ -155,5 +155,20 @@ travelList.addEventListener('click', renderCategory);
 
 
 
+//sideModal 닫고 로직 구현 (클래스와 애니메이션을 활용)
+//열고 닫는 걸 toggle을 이용할까.. 했는데 서로 다른 애니메이션이라 적용이 어려울 것 같아 포기. (코드도 딱히 간결해지지 않을 것이라 판단)
+const closingRight = (e) => {
+  e.currentTarget.parentNode.classList.add("closingRight");
+  e.currentTarget.parentNode.classList.remove("openingLeft"); //기존 애니메이션을 없애야함 - 그래야 나중에 다시 적용할 때, 적용되는 모습이 보임
+}
+const closeRight = document.querySelector("#closeModal");
+closeRight.addEventListener("click", closingRight);
 
 
+const openingLeft = (e) => {
+  const modalRight = document.querySelector("#modalRight");
+  modalRight.classList.add("openingLeft");
+  modalRight.classList.remove("closingRight");
+}
+const openLeft = document.querySelector("#threeBar");
+openLeft.addEventListener("click", openingLeft)
