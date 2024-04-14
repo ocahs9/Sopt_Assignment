@@ -468,7 +468,11 @@ footer p {
   font-family: sans-serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
+
+  /*스크롤바도 스타일링하고 싶은데 그건 좀 나중에...*/
 }
+
+
 
 /* 사용안함 -> 
 .tableContainer .cartTable{
@@ -486,6 +490,8 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout
   셀의 height가 셀 콘텐츠의 height 보다 클 땐 반영되고, 작을 땐 반영안된다.
   이 경우, img의 height: 100%로 해놓아서, 더 작게 해도 반영은 된다.
 */
+
+/*구현 예시처럼 셀의 크기를 고정 시키는 방법은?*/
 th,td {
   overflow: hidden;
   width: 16vw; /*일일히 다 재가면서 했는데,, 다른 방법은 없을까?*/
@@ -497,4 +503,11 @@ th,td {
 
 th.checkCol{
   width: 5vw;
+}
+
+
+.theadFix{
+  position: sticky; /*사용하려면 부모태그에 height 값이 있어야 한다던데.. 왜 되는거지?*/
+  top:3px;
+  background-color: rgb(160 160 160);
 }
