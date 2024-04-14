@@ -18,16 +18,25 @@ function deleteGrandParent(e)
   grandParent.remove(); //조부모 삭제
 }
 
-/* 로컬 스토리지에서 값을 가져와서, 체크 박스 체크 해주는 함수
+/* 로컬 스토리지에서 값을 가져와서, 체크 박스 체크 해주는 함수*/
 function initSelect()
 {
-  const init = JSON.stringify(localStorage.getItem(ITEM_LIST_KEY));
-  
+  console.log("init실행");
+  const initParsedItems = JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
+  //로컬 스토리지 기록으로 체크 해줄 checkbox들 전부 가져옴
+  const checkboxes = document.querySelectorAll("#cartBody input[type ='checkbox']") //cartbody에 있는 모든 checkbox 타입의 input을 배열로 가져옴
+  checkboxes.forEach((box)=>{
+    const grandNode = box.parentElement.parentElement;
+    if(initParsedItems[grandNode.id -1].userCart === true) //userCart 즉, 체크여부
+    {
+      box.checked = true; //이건 그냥 check로만 만들어주는 것! (그래서 신경쓸 게 생각보다 없음)
+    }
+  });
 }
-그리고, 전체 체크한 것을 인식하여 userCart가 true로 변하게 만들어야 한다....
-그것만 만들면 모달만 슥 만들면 끝임. 
-나머지는 계산이고.
-*/
+
+
+
+
 
 function selected(e)
 {
@@ -100,12 +109,13 @@ function paintCart(obj)
 //이제 로컬스토리지에서 가져온 걸 순회하면서, 테이블에 작성할 예정
 const savedItemList = localStorage.getItem(ITEM_LIST_KEY); 
 console.log(savedItemList);
-console.log("메롱");
 if(savedItemList !== null) //로컬 스토리지에서 가져온 게 비어있는게 아니라면
 {
   const parsedItemList = JSON.parse(savedItemList); //다시 js오브젝트로 변환
   parsedItemList.forEach(paintCart);
 }
+
+initSelect(); //이거 위치도 중요함. 당연히 paint된 이후에 진행해야 함!
 
 //allCheck버튼 누를 때, 다른 체크 박스들 전부 체크로 변경
 const allCheckFunc = (e) => {
