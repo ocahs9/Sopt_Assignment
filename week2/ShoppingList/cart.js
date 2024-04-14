@@ -3,7 +3,7 @@ const ITEM_LIST_KEY = "itemList";
 const cartBody = document.getElementById('cartBody');
 
 const storageItems = localStorage.getItem(ITEM_LIST_KEY);
-const parsedItems = JSON.parse(storageItems);
+const parsedItems = JSON.parse(storageItems); //localStorage에서 가져온 아이템
 
 function deleteGrandParent(e)
 {
@@ -118,13 +118,25 @@ const allCheckFunc = (e) => {
     //모든 체크 버튼들 체크로 변경
     checkboxes.forEach((box)=>{
       box.checked = true;
+      // checked가 변경되는건, js 프로그래밍으로 속성을 변경하는 것이므로 사용자의 '이벤트'로 인식하지 못한다.
+      // 따라서 원하는대로 input에 달린 change 이벤트 리스너가 호출되지 않는다.
+      // 그래서, 결국 직접 조부모 노드를 찾아가서, 해당 노드의 id로 객체를 찾은다음
+      // 해당 객체의 userCart를 직접 갱신해주는 로직을 추가해주어 해결했다!!
+      parsedItems[(box.parentElement.parentElement).id - 1].userCart = true; //됐다!!!!!!!!!!!!!!
     })
+
+    localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+
   }
   else{ //체크 안되어 있으면(혹은 체크 해제했으면)
     //모든 체크 버튼들 체크 해제
     checkboxes.forEach((box)=>{
       box.checked = false;
+      parsedItems[(box.parentElement.parentElement).id - 1].userCart = false;
     })
+
+    localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+
   }
 }
 
