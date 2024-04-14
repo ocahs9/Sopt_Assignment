@@ -488,7 +488,7 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout
 */
 th,td {
   overflow: hidden;
-  width: 15vw;
+  width: 16vw; /*일일히 다 재가면서 했는데,, 다른 방법은 없을까?*/
   height: 15vh;
   border: 1px solid rgb(160 160 160);
   padding: 8px 10px;

@@ -2,9 +2,20 @@ const ITEM_LIST_KEY = "itemList";
 //장바구니(cart)페이지 구현 - 로컬 스토리지 활용
 const cartBody = document.getElementById('cartBody');
 
+const storageItems = localStorage.getItem(ITEM_LIST_KEY);
+const parsedItems = JSON.parse(storageItems);
+
 function deleteGrandParent(e)
 {
-  (e.currentTarget.parentNode).parentNode.remove(); //조부모 삭제
+  const grandParent = (e.currentTarget.parentNode).parentNode;
+  //해당 노드의 id를 확인하여, 
+  //로컬 스토리지에 저장된 객체 배열들의 요소들 중,
+  //같은 id를 갖는 객체를 cart = false; 설정해주기.
+  parsedItems[grandParent.id -1].cart = false;
+  //그 후, 다시 로컬스토리지도 갱신
+  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+
+  grandParent.remove(); //조부모 삭제
 }
 
 function paintCart(obj)
