@@ -151,6 +151,7 @@ const allCheckFunc = (e) => {
   }
 }
 
+//모달 열고 닫는 로직 구성
 const allCheck = document.querySelector("#allCheck");
 allCheck.addEventListener("change", allCheckFunc)
 
@@ -160,4 +161,13 @@ buyBtn.addEventListener("click", (e)=> {
   const buyModalWrapper = document.getElementById("buyModalWrapper");
   buyModalWrapper.style.display = "flex"; /*이렇게 넣은 건 인라인스타일로 들어간다 */
 });
+
+//closeBuyModal 아이콘 누를 때 로직 구성
+const closeBuyModal = document.getElementById("closeBuyModal");
+closeBuyModal.addEventListener("click", ()=>{
+  const buyModalWrapper = document.getElementById("buyModalWrapper");
+  buyModalWrapper.style.display = "none"; 
+});
+
+
 //이제 모달만 구현하면 끝!!!!!!!!

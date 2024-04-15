@@ -34,13 +34,18 @@
     </div>
 
     <div class="buyOrBack">
-      <button class="cartBtn" id="buyBtn">결제하기</button>
+      <button class="cartBtn" id="buyBtn">구매하기</button>
       <a href="./index.html"><button class="cartBtn" id="BackBtn">홈으로</button></a>
     </div>
     
     <div class="modalWrapper" id="buyModalWrapper" style="display: none;"> <!--배경 전체를 못 누르게 만들기 위헤-->
       <div class="modal" id="buyModal">  <!--실제 구매 모달-->
-        hi
+        <div class="closeDiv"><i id="closeBuyModal" class="fa-solid fa-square-xmark"></i></div>
+        <div id="modalContent">
+          
+        </div>
+        <div class="payDiv"><button id="payBtn">결제하기</button></div>
+        
       </div>
     </div>
     <!--이제 모달만 구현하면 끝!!!!!!!!-->
