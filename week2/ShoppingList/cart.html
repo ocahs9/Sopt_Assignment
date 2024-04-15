@@ -42,13 +42,16 @@
       <div class="modal" id="buyModal">  <!--실제 구매 모달-->
         <div class="closeDiv"><i id="closeBuyModal" class="fa-solid fa-square-xmark"></i></div>
         <div id="modalContent">
+          <!--여기에 상품들 렌더링 될 예정-->
           
         </div>
-        <div class="payDiv"><button id="payBtn">결제하기</button></div>
-        
+        <div class="payDiv">
+          <button id="payBtn">결제하기</button>
+          <div style="position: absolute; right: 0;">총 금액: <span id="totalPrice">0</span> 원</div>
+        </div>
       </div>
     </div>
-    <!--이제 모달만 구현하면 끝!!!!!!!!-->
+    
   </main>
 
   

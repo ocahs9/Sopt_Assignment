@@ -106,16 +106,29 @@ function paintCart(obj)
   }
 }
 
-
+ 
 //이제 로컬스토리지에서 가져온 걸 순회하면서, 테이블에 작성할 예정
-const savedItemList = localStorage.getItem(ITEM_LIST_KEY); 
-console.log(savedItemList);
-if(savedItemList !== null) //로컬 스토리지에서 가져온 게 비어있는게 아니라면
-{
-  const parsedItemList = JSON.parse(savedItemList); //다시 js오브젝트로 변환
-  parsedItemList.forEach(paintCart);
+
+function deleteCart(){ //그 전에, 렌더링 전에 존재하는 걸 삭제하는 로직 필요(필수,중요)
+  const cartBody = document.getElementById("cartBody");
+  while(cartBody.firstChild){ 
+    cartBody.removeChild(cartBody.firstChild);
+  }
 }
 
+function renderCart()
+{
+  deleteCart();
+  const savedItemList = localStorage.getItem(ITEM_LIST_KEY); 
+  console.log(savedItemList);
+  if(savedItemList !== null) //로컬 스토리지에서 가져온 게 비어있는게 아니라면
+  {
+    const parsedItemList = JSON.parse(savedItemList); //다시 js오브젝트로 변환
+    parsedItemList.forEach(paintCart);
+  }
+}
+
+renderCart();
 initSelect(); //이거 위치도 중요함. 당연히 paint된 이후에 진행해야 함!
 
 //allCheck버튼 누를 때, 다른 체크 박스들 전부 체크로 변경
@@ -171,3 +184,106 @@ closeBuyModal.addEventListener("click", ()=>{
 
 
 //이제 모달만 구현하면 끝!!!!!!!!
+const modalContent = document.querySelector("#modalContent");
+function paintModalItem(obj)
+{  
+  //0. 아이템 틀 연결
+  const div = document.createElement("div") ;
+  div.classList.add("rowFlexDiv");
+  modalContent.appendChild(div);
+
+  // 1. 이미지 연결
+  const img = document.createElement("img");
+  img.setAttribute("src", obj.img);
+  div.appendChild(img);
+
+  // 2. 상품 카테고리 , 이름, 가격 설정 및 연결
+  const p1 = document.createElement("p");
+  p1.classList.add("cartItemP");
+  p1.innerText = `카테고리 : ${obj.category}`;
+
+  const p2 = document.createElement("p");
+  p2.classList.add("cartItemP");
+  p2.innerText = `상품명: ${obj.name}`;
+
+  const p3 = document.createElement("p");
+  //p3.classList.add("cartItemP");
+  p3.setAttribute("id", "cartItemPrice");
+  //toLocaleString(인자) 가 아니라 변환할 것.toLocaleString() 형식으로 사용해야한다
+  //메서드를 사용하는거라서 사용법이 그런 듯. 사용법 주의하고 정신차리기!
+  const localPrice = obj.price.toLocaleString(); 
+  p3.innerText = `가격 : ${localPrice}`;
+  
+  div.appendChild(p1);
+  div.appendChild(p2);
+  div.appendChild(p3);
+}
+
+ //그리고 총 가격 계산
+function deleteBuyList()
+{
+  while(modalContent.firstChild){ //만약 모달콘텐츠 박스 안에 첫번째 자식이 존재하면
+    (modalContent.firstChild).remove(); //다 없어질 때까지 차근 차근 요소 삭제
+    //혹은 modalContent.removeChild(modalContent.firstChild); 을 통해서도 삭제가 가능하다.
+  }
+}
+
+function renderBuyList() {
+  //매번 클릭시마다 paint 되도록 수정 - 새로운 문제 : 계속 껐다 키면 계속 렌더링 됨
+  //따라서 처음에 기존 렌더링 여부 확인 후, 렌더링 되어 있으면 삭제하는 로직 필요
+  deleteBuyList(); //필수!
+
+  const  NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
+
+  const nowUserCart = NowAllObjs.filter((obj) => {
+    return (obj.userCart === true);
+  });
+  nowUserCart.forEach(paintModalItem);
+
+  //가격만 뽑아내어 새로운 배열 만듬
+  let allPrice = 0;
+  const priceArr = nowUserCart.map((obj) => obj.price);  
+  for (let aPrice of priceArr) //배열의 모든 요소 순회 (length를 사용할 수도 있음)
+  {
+    allPrice += aPrice;
+  }
+  const totalPrice = document.getElementById("totalPrice");
+  totalPrice.textContent = allPrice.toLocaleString();
+
+}
+
+buyBtn.addEventListener("click", renderBuyList);
+
+
+//마지막! 결제하기 버튼을 클릭 시 alert 뜨고 장바구니에서 삭제하기
+const payBtn = document.getElementById("payBtn");
+payBtn.addEventListener("click", ()=>{
+  alert("주문 완료!");
+})
+
+//아직 수정할 점들: 구매 모달 꺼지게 하는거 필요.
+const payFunc = (e) => {
+  const  NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
+  const nowUserCart = NowAllObjs.filter((obj) => {
+    return (obj.userCart === true);
+  });
+
+  for(i = 0; i < nowUserCart.length; i++)
+  {
+    //현재 구매 직전의 아이템들의 아이디를 인덱스 삼아 전체 객체 배열에서 접근하여, 
+    //해당 객체의 userCart 값을 false로 돌린다.
+    NowAllObjs[(nowUserCart[i].id - 1)].userCart = false;
+    NowAllObjs[(nowUserCart[i].id - 1)].cart = false;
+  }
+  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(NowAllObjs)); //로컬 스토리지에 갱신
+  renderCart();
+  initSelect();
+
+  //구매창 닫기
+  const buyModalWrapper = document.getElementById("buyModalWrapper");
+  buyModalWrapper.style.display = "none"; 
+}
+
+payBtn.addEventListener("click", payFunc);
+
+//userCart엔 이미 삭제된 게 .......남아있는 문제 발생

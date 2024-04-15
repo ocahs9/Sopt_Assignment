@@ -555,8 +555,8 @@ th.checkCol{
   justify-content: space-between;
   align-items: flex-start;
 
-  width: 60%;
-  height: 60%;
+  width: 50%;
+  height: 50%;
   background-color: white;
   
   
@@ -567,6 +567,11 @@ th.checkCol{
 }
 
 #modalContent{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+
   position: relative;
   top: 0; /*기본 맥락을 사용하기 위해 relative 활용*/
 
@@ -609,4 +614,55 @@ th.checkCol{
   cursor: pointer;
 }
 
+.rowFlexDiv{
+  position: relative;
 
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; 
+  justify-content: space-between;
+  align-items: center;
+  
+
+  margin: 5px;
+  
+  width: 98%;
+  height: 25%;
+  border: 1px solid red;
+}
+
+#modalContent .rowFlexDiv img{
+  width: 15%;
+
+  border: 1px solid wheat;
+}
+
+.cartItemP{
+  
+  
+  text-align: center;
+  align-content: center; /*align-items와는 좀 다르다. 기능 자체나, 사용 방법이나..*/
+}
+
+#cartItemPrice{
+  align-self:flex-end;
+  /*align-self 속성을 활용하여 해결! 나중엔 그리드도 좀 연습해봐야겠다.*/
+  /*position: absolute; 이거 화면 창 줄이면 겹쳐지는 문제 발생하는데 어떻게 해결하지?
+  bottom: 0;
+  right: 1em;
+  */
+  margin-right: 10px;
+  margin-bottom: 5px;
+  border: 1px dotted black;
+  background-color: white;
+}
+
+#payBtn{
+  border-radius: 0.25rem;
+  width: 10%;
+}
+
+#payBtn:hover{
+  background-color: pink;
+  
+}
