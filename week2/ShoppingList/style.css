@@ -529,3 +529,37 @@ th.checkCol{
 .cartBtn:hover{
   background-color: pink;
 }
+
+
+.modalWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 0; /*위에 딱 고정시킴.*/
+  z-index: 1; /*더 앞에 나오도록 -> 근데 없어도 문제 없긴 함*/
+
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0,0.5); /*반 투명.*/
+}
+
+.modal{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  width: 60%;
+  height: 60%;
+  background-color: white;
+  
+  overflow-y: scroll;
+
+  border-radius: 0.45rem;
+  /*중심으로 부터 시작되고, 흐림정도가 다른 2개의 box-shadow 효과를 레이어로 활용*/
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(66, 217, 55, 0.8);
+}

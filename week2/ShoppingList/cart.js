@@ -12,6 +12,7 @@ function deleteGrandParent(e)
   //로컬 스토리지에 저장된 객체 배열들의 요소들 중,
   //같은 id를 갖는 객체를 cart = false; 설정해주기.
   parsedItems[grandParent.id -1].cart = false;
+  parsedItems[grandParent.id -1].userCart = false; //처음엔 이거 안해줬는데, 삭제 후 추가하니 자동 체크되는 상황 발생하여 수정함
   //그 후, 다시 로컬스토리지도 갱신
   localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
 
@@ -154,3 +155,9 @@ const allCheck = document.querySelector("#allCheck");
 allCheck.addEventListener("change", allCheckFunc)
 
 //buy버튼 누를 때 로직 구성
+const buyBtn = document.getElementById("buyBtn");
+buyBtn.addEventListener("click", (e)=> {
+  const buyModalWrapper = document.getElementById("buyModalWrapper");
+  buyModalWrapper.style.display = "flex"; /*이렇게 넣은 건 인라인스타일로 들어간다 */
+});
+//이제 모달만 구현하면 끝!!!!!!!!
