@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> <!--폰트어썸 CDN방식으로 IMPORT-->
   <link rel="stylesheet" href="../../style.css"> <!--전역 스타일-->
   <link rel="stylesheet" href="./cart.css"> <!--카트만의 스타일-->
+  <script src="./cart.js" defer></script> 
 </head>
 <body>
   <span id="top"></span> <!--맨 위로 돌아올 수 있도록-->
@@ -14,14 +15,14 @@
     <a href="../../index.html"><i class="fa-solid fa-house"></i></a>
     <h1><a  href="#top">Jun Pick - Cart</a></h1>
     <i id="threeBar" class="fa-solid fa-bars"></i>
-    
   </header>
+
   <main id="cartContainer">
     <div class="tableContainer">
       <table id="cartTable">
         <thead class="theadFix">
           <tr>
-            <th class="checkCol"><input id="allCheck" type="checkbox" ></th>
+            <th class="checkCol"><input id="allCheck" type="checkbox" /></th>
             <th colspan="2">상품 정보</th>
             <th>상품 금액</th>
             <th>카테고리</th>
@@ -52,11 +53,6 @@
         </div>
       </div>
     </div>
-    
   </main>
-
-  
-  
-  <script src="./cart.js"></script> 
 </body>
 </html>

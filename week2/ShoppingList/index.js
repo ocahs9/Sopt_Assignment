@@ -1,28 +1,15 @@
 import { ITEMLIST } from "./js/utils/ITEMLIST.js";
-
 const ITEM_LIST_KEY = "itemList";
 
-//console.dir을 이용하여 객체의 더 자세한 속성들 확인
-const allSection = document.querySelector("#all");
-const albumSection = document.querySelector('#album');
-const movieSection = document.querySelector('#movie');
-const travelSection = document.querySelector('#travel');
-
-const mainContainer = document.querySelector("#mainContainer");
+//console.dir을 이용하여 객체의 더 자세한 속성들 확인 가능.
 
 // 매번 렌더링시마다 filter해서 요소들을 걸러내는게 비효율적이라 판단.
 // 따라서 미리 필터링 된 요소들을 저장해 둠.
 // 참고로, const로 선언한 배열 자체는 수정(대체)이 불가능하지만,
 // 배열의 '요소'들은 수정이 가능하다.
-let allObjects;
-const storageObjects = localStorage.getItem(ITEM_LIST_KEY);
-if(storageObjects !== null) //로컬 스토리지에서 가져온 값으로 매번 갱신해줘야함. (아니면 계속 덮어쓰기 되는 버그 발생)
-{
-  allObjects = JSON.parse(storageObjects);
-}
-else{
-  allObjects = ITEMLIST;
-}
+
+// 가져온 결과가 falsy인 경우 빈 배열 할당. (아니면 parse까지 수행하여 배열을 넣음)
+const allObjects = localStorage.getItem(ITEM_LIST_KEY) ? JSON.parse(localStorage.getItem(ITEM_LIST_KEY)) : [] ;
 const albumObjects = ITEMLIST.filter((obj) => obj.category === "album"); 
 const movieObjects = ITEMLIST.filter((obj) => obj.category === "movie"); 
 const travelObjects = ITEMLIST.filter((obj) => obj.category === "travel"); 
@@ -75,7 +62,10 @@ function addCart(e){
   }
 }
 
+//renderSection : 섹션을 렌더링 하기 위한 함수 ,  
 const renderSection = (id, title, arr) =>{
+  const mainContainer = document.querySelector("#mainContainer");
+
   removeOtherSection();
   
   //섹션을 만들고, 제목까지 붙이는 로직
@@ -125,23 +115,10 @@ const renderSection = (id, title, arr) =>{
   });
 };
 
-renderSection("all", "전체", ITEMLIST);
 
-
-const allList = document.querySelector("#allList");
-const albumList = document.querySelector("#albumList");
-const movieList = document.querySelector("#movieList");
-const travelList = document.querySelector("#travelList");
-
-/*****처음에 계속 all말고 다른거 렌더링 안되길래 디버깅 계속 해봤는데
- * 허무하게 예전에 작성해놓은 display:none 속성 때문이었음 - 현재는 css상에서 삭제 완료
- * 문제가 발생할 시, inspector -> element의 요소들을 활용하여 바로 디버깅해볼 것.
- * *****/
-//화살표 함수 말고 다른 방법으로도 함수를 정의해봄
+//renderCategory : 특정 섹션을 판단하고 renderSection 호출하는 함수
 function renderCategory(e){
-  //하나로 통일해서 작성해보려고 시도 중!
   const list = e.currentTarget //자식 요소 눌렀을 때, 다른 거 안 가져오도록 일부러 current 타겟으로 함
-  removeOtherSection();
   switch(list.id)
   {
     case "allList":
@@ -161,17 +138,34 @@ function renderCategory(e){
       renderSection("travel", "여행", travelObjects);
       break;
   }
-  //console.log("최종 :", mainContainer);
 }
+
+/*****처음에 계속 all말고 다른거 렌더링 안되길래 디버깅 계속 해봤는데
+ * 허무하게도 예전에 작성해놓은 display:none 속성 때문이었음 - 현재는 css상에서 삭제 완료
+ * 문제가 발생할 시, inspector -> element의 요소들을 활용하여 바로 디버깅해볼 것.
+ * *****/
+
+//************ 카테고리에 렌더링하는 이벤트 리스너 부착******************
+const allList = document.querySelector("#allList");
+const albumList = document.querySelector("#albumList");
+const movieList = document.querySelector("#movieList");
+const travelList = document.querySelector("#travelList");
+
 allList.addEventListener('click', renderCategory);
 albumList.addEventListener('click', renderCategory); 
 movieList.addEventListener('click', renderCategory); 
 travelList.addEventListener('click', renderCategory);  
 
 
+//************오른쪽 sideModal 열고 닫는 로직 (클래스와 애니메이션을 활용)************
+const openingLeft = (e) => {
+  const modalRight = document.querySelector("#modalRight");
+  modalRight.classList.add("openingLeft");
+  modalRight.classList.remove("closingRight");
+}
+const openLeft = document.querySelector("#threeBar");
+openLeft.addEventListener("click", openingLeft)
 
-//sideModal 닫고 로직 구현 (클래스와 애니메이션을 활용)
-//열고 닫는 걸 toggle을 이용할까.. 했는데 서로 다른 애니메이션이라 적용이 어려울 것 같아 포기. (코드도 딱히 간결해지지 않을 것이라 판단)
 const closingRight = (e) => {
   e.currentTarget.parentNode.classList.add("closingRight");
   e.currentTarget.parentNode.classList.remove("openingLeft"); //기존 애니메이션을 없애야함 - 그래야 나중에 다시 적용할 때, 적용되는 모습이 보임
@@ -180,10 +174,5 @@ const closeRight = document.querySelector("#closeModal");
 closeRight.addEventListener("click", closingRight);
 
 
-const openingLeft = (e) => {
-  const modalRight = document.querySelector("#modalRight");
-  modalRight.classList.add("openingLeft");
-  modalRight.classList.remove("closingRight");
-}
-const openLeft = document.querySelector("#threeBar");
-openLeft.addEventListener("click", openingLeft)
+//****************** 함수 실행 부분 ******************
+renderSection("all", "전체", ITEMLIST);

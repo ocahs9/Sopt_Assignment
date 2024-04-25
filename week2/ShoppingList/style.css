@@ -341,39 +341,34 @@ main{
 /*5개는 디폴트니까 따로 설정 안함 또한, 최소 너비를 정하기 위해 min-width로 수정함*/
 @media screen and (max-width: 1220px) {
   .flexSection .productCard {
-    min-width: 22%; /* 4개의 요소가 보여짐 */
+    width: 22%; /* 4개의 요소가 보여짐 */
   }
 }
 
 /* 화면 너비가 900px 미만이 되면 */
 @media screen and (max-width: 900px) {
   .flexSection .productCard {
-    min-width: 28%; /* 3개의 요소가 보여짐 */
+    width: 28%; /* 3개의 요소가 보여짐 */
   }
 }
 
 /* 화면 너비가 700px 미만이 되면 */
 @media screen and (max-width: 700px) {
   .flexSection .productCard {
-    min-width: 40%; /* 2개의 요소만 보여짐 */
+    width: 40%; /* 2개의 요소만 보여짐 */
   }
 }
 
 /* 화면 너비가 600px 미만이 되면 */
 @media screen and (max-width: 600px) {
   .flexSection .productCard {
-    min-width: 90%; /* 1개의 요소가 보여짐 */
+    width: 90%; /* 1개의 요소가 보여짐 */
   }
 }
 
-
-
-/*내컴퓨터 대략 1750이 가장 큰 width (이거 어떻게 계산?
+/*내컴퓨터 대략 1750이 가장 큰 width (이거 간단하게 어떻게 계산?)
 
 */
-
-
-
 
 .flexSection .productCard:hover{
   animation: boom 1s infinite linear; /*손댔을 때 자연스레 커졌다 작아졌다*/
@@ -438,7 +433,3 @@ footer p {
 
   /*아니면 vertical-align을 footer에서 사용할 수도 있을 듯..?*/
 }
-
-
-
-
