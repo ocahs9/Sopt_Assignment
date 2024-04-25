@@ -73,7 +73,7 @@ function paintCart(obj)
     // 두번째 열 생성 (이미지)
     const td2 = document.createElement("td");
     const img = document.createElement("img");
-    img.setAttribute("src", obj.img);
+    img.setAttribute("src", "../../" + obj.img);
     td2.appendChild(img);
     tr.appendChild(td2);
 
@@ -194,7 +194,7 @@ function paintModalItem(obj)
 
   // 1. 이미지 연결
   const img = document.createElement("img");
-  img.setAttribute("src", obj.img);
+  img.setAttribute("src", "../../" + obj.img);
   div.appendChild(img);
 
   // 2. 상품 카테고리 , 이름, 가격 설정 및 연결

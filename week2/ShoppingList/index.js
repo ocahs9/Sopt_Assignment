@@ -1,4 +1,4 @@
-import { ITEMLIST } from "./ITEMLIST.js";
+import { ITEMLIST } from "./js/utils/ITEMLIST.js";
 
 const ITEM_LIST_KEY = "itemList";
 
