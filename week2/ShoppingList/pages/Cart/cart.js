@@ -228,11 +228,9 @@ function renderBuyList() {
   //따라서 처음에 기존 렌더링 여부 확인 후, 렌더링 되어 있으면 삭제하는 로직 필요
   deleteBuyList(); //필수!
 
-  const  NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
+  const NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
 
-  const nowUserCart = NowAllObjs.filter((obj) => {
-    return (obj.userCart === true);
-  });
+  const nowUserCart = NowAllObjs.filter(obj => (obj.userCart === true));
   nowUserCart.forEach(paintModalItem);
 
   /*

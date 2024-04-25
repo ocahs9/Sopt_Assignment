@@ -10,9 +10,7 @@ const ITEM_LIST_KEY = "itemList";
 
 // 가져온 결과가 falsy인 경우 빈 배열 할당. (아니면 parse까지 수행하여 배열을 넣음)
 const allObjects = localStorage.getItem(ITEM_LIST_KEY) ? JSON.parse(localStorage.getItem(ITEM_LIST_KEY)) : [] ;
-const albumObjects = ITEMLIST.filter((obj) => obj.category === "album"); 
-const movieObjects = ITEMLIST.filter((obj) => obj.category === "movie"); 
-const travelObjects = ITEMLIST.filter((obj) => obj.category === "travel"); 
+
 
 function removeOtherSection(){
   const all = document.getElementById("all");
@@ -115,30 +113,18 @@ const renderSection = (id, title, arr) =>{
   });
 };
 
-
-//renderCategory : 특정 섹션을 판단하고 renderSection 호출하는 함수
+//renderCategory 함수를 switch문에서 벗어남. 필요한 거를 필터링해서, 렌더링하는 방식으로 바꿔서 코드 간결성 확보
 function renderCategory(e){
   const list = e.currentTarget //자식 요소 눌렀을 때, 다른 거 안 가져오도록 일부러 current 타겟으로 함
-  switch(list.id)
-  {
-    case "allList":
-      console.log("all 섹션 리렌더링 시작");
-      renderSection("all", "전체", allObjects);
-      break; //break 꼭 써주기! 
-    case "albumList":
-      console.log("album 섹션 리렌더링 시작");
-      renderSection("album", "앨범", albumObjects);
-      break;
-    case "movieList":
-      console.log("movie 섹션 리렌더링 시작");
-      renderSection("movie", "영화", movieObjects);
-      break;
-    case "travelList":
-      console.log("travel 섹션 리렌더링 시작");
-      renderSection("travel", "여행", travelObjects);
-      break;
-  }
+
+  const sectionId = list.id.replace("List", ""); //id값을 가져온다음, List라는 단어를 빼서 만듬
+  const title = list.innerText;
+  const renderedObjects = sectionId==="all"? ITEMLIST : ITEMLIST.filter((obj) => obj.category === sectionId); //ALL이면 전체 렌더링 , 아니면 필터링 된거 렌더링
+ 
+  renderSection(sectionId, title, renderedObjects);
 }
+
+
 
 /*****처음에 계속 all말고 다른거 렌더링 안되길래 디버깅 계속 해봤는데
  * 허무하게도 예전에 작성해놓은 display:none 속성 때문이었음 - 현재는 css상에서 삭제 완료
