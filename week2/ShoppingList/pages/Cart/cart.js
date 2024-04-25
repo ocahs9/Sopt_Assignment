@@ -6,16 +6,18 @@ const storageItems = JSON.parse(localStorage.getItem(ITEM_LIST_KEY)) || [];
 
 function deleteCartItem(e)
 {
-  const grandParent = (e.currentTarget.parentNode).parentNode;
+  //closest 적용해봄 ! //const removedItem = (e.currentTarget.parentNode).parentNode; 와 같이 접근 안해도 됨
+  const removedItem = e.currentTarget.closest("tr"); //선택자를 통해, 해당 선택자를 가진 가장 가까운 조상 요소를 가져옴!
+  
   //해당 노드의 id를 확인하여, 
   //로컬 스토리지에 저장된 객체 배열들의 요소들 중,
   //같은 id를 갖는 객체를 cart = false; 설정해주기.
-  storageItems[grandParent.id -1].cart = false;
-  storageItems[grandParent.id -1].userCart = false; //처음엔 이거 안해줬는데, 삭제 후 추가하니 자동 체크되는 상황 발생하여 수정함
+  storageItems[removedItem.id -1].cart = false;
+  storageItems[removedItem.id -1].userCart = false; //처음엔 이거 안해줬는데, 삭제 후 추가하니 자동 체크되는 상황 발생하여 수정함
   //그 후, 다시 로컬스토리지도 갱신
   localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(storageItems));
 
-  grandParent.remove(); //조부모 삭제
+  removedItem.remove(); //조부모 삭제
 }
 
 /* 로컬 스토리지에서 값을 가져와서, 체크 박스 체크 해주는 함수*/
@@ -25,8 +27,8 @@ function initChecked()
   //로컬 스토리지 기록으로 체크 해줄 checkbox들 전부 가져옴
   const checkboxes = document.querySelectorAll("#cartBody input[type ='checkbox']") //cartbody에 있는 모든 checkbox 타입의 input을 배열로 가져옴
   checkboxes.forEach((box)=>{
-    const grandNode = box.parentElement.parentElement;
-    if(initstorageItems[grandNode.id -1].userCart === true) //userCart 즉, 체크여부
+    const trNode = box.closest("tr"); 
+    if(initstorageItems[trNode.id -1].userCart === true) //userCart 즉, 체크여부
     {
       box.checked = true; //이건 그냥 check로만 만들어주는 것! (그래서 신경쓸 게 생각보다 없음)
     }
@@ -36,14 +38,12 @@ function initChecked()
 
 function bindingChecked(e)
 {
-  const grandParent = (e.currentTarget.parentNode).parentNode;
-  if(e.currentTarget.checked) //체크 되어있는지 확인(boolean값임)
-  {
-    storageItems[grandParent.id -1].userCart = true;
-  }
-  else{ //체크 안되어 있으면(혹은 체크 해제했으면)
-    storageItems[grandParent.id -1].userCart = false;
-  }
+  const removedItem = (e.currentTarget.parentNode).parentNode;
+  //체크 되어있는지 확인(boolean값임) - if,else문이 아닌 삼항 연산자로 표현
+  e.currentTarget.checked ? 
+  storageItems[removedItem.id -1].userCart = true : 
+  storageItems[removedItem.id -1].userCart = false
+  
   //로컬 스토리지에 갱신
   localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(storageItems));
 }
