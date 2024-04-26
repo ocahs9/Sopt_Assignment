@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jun Pick List_Cart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> <!--폰트어썸 CDN방식으로 IMPORT-->
+  <link rel="stylesheet" href="../../style.css"> <!--전역 스타일-->
+  <link rel="stylesheet" href="./cart.css"> <!--카트만의 스타일-->
+  <script src="./cart.js" defer></script> 
+</head>
+<body>
+  <span id="top"></span> <!--맨 위로 돌아올 수 있도록-->
+  <header>
+    <a href="../../index.html"><i class="fa-solid fa-house"></i></a>
+    <h1><a  href="#top">Jun Pick - Cart</a></h1>
+    <i id="threeBar" class="fa-solid fa-bars"></i>
+  </header>
+
+  <main id="cartContainer">
+    <div class="tableContainer">
+      <table id="cartTable">
+        <thead class="theadFix">
+          <tr>
+            <th class="checkCol"><input id="allCheck" type="checkbox" /></th>
+            <th colspan="2">상품 정보</th>
+            <th>상품 금액</th>
+            <th>카테고리</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody">
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="buyOrBack">
+      <button class="cartBtn" id="buyBtn">구매하기</button>
+      <a href="../../index.html"><button class="cartBtn" id="BackBtn">홈으로</button></a>
+    </div>
+    
+    <div class="modalWrapper" id="buyModalWrapper" style="display: none;"> <!--배경 전체를 못 누르게 만들기 위헤-->
+      <div class="modal" id="buyModal">  <!--실제 구매 모달-->
+        <div class="closeDiv"><i id="closeBuyModal" class="fa-solid fa-square-xmark"></i></div>
+        <div id="modalContent">
+          <!--여기에 상품들 렌더링 될 예정-->
+          
+        </div>
+        <div class="payDiv">
+          <button id="payBtn">결제하기</button>
+          <div style="position: absolute; right: 0;">총 금액: <span id="totalPrice">0</span> 원</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
