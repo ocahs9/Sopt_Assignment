@@ -6,6 +6,9 @@
   <title>Jun Pick List</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> <!--폰트어썸 CDN방식으로 IMPORT-->
   <link rel="stylesheet" href="./style.css">
+
+  <!--type="module"을 해줘야만 해당 스크립트에서 ES6 import문을 사용할 수 있다-->
+  <script type="module" src="./index.js" defer></script> <!--js연결에 대한 고민 완료 : 최적의 위치 (header안에서 defer속성)-->
 </head>
 <body>
   <span id="top"></span> <!--맨 위로 돌아올 수 있도록-->
@@ -13,16 +16,16 @@
     <a href="./index.html"><i class="fa-solid fa-house"></i></a>
     <h1><a  href="#top">Jun Pick</a></h1>
     <i id="threeBar" class="fa-solid fa-bars"></i>
-    
   </header>
+
   <main id="mainContainer">
     <nav class="sideNav">
       <h3>Pick!</h3>
       <ul>
-        <li class="pickList" id="allList"><a href="#all">전체</a></li>
+        <li class="pickList" id="allList" ><a href="#all">전체</a></li>
         <li class="pickList" id="albumList"><a href="#album">앨범</a></li>
-        <li class="pickList" id="movieList"><a href="#movie">영화</a></li>
-        <li class="pickList" id="travelList"><a href="#travel">여행</a></li>
+        <li class="pickList" id="movieList" ><a href="#movie">영화</a></li>
+        <li class="pickList" id="travelList" ><a href="#travel">여행</a></li>
       </ul>
     </nav>
 
@@ -31,35 +34,31 @@
       <ul>
         <li class="modalList"><a href="#">관심 상품 목록</a></li>
         <li class="modalList"><a href="#">관리자 페이지</a></li>
-        <li class="modalList"><a href="./cart.html">장바구니</a></li>
+        <li class="modalList"><a href="./pages/Cart/cart.html">장바구니</a></li>
       </ul>
     </nav>
 
     <div class="slideWindow">
       <ul class="bannerList" id="banner1">
-        <li><img src="./images/Luke_WhenFacing.jpeg"></li>
-        <li><img src="./images/Muse_BlackHole.jpeg"></li>
-        <li><img src="./images/혁오_1집.jpg"></li>
-        <li><img src="./images/GD_2017.webp"></li>
-        <li><img src="./images/Muse_Absolution.jpeg"></li>
-        <li><img src="./images/검정치마_Special.jpg"></li>
-        <li><img src="./images/잔나비_SeeYourEyes.jpg"></li>
+        <li><img src="./assets/images/albums/Luke_WhenFacing.jpeg"></li>
+        <li><img src="./assets/images/albums/Muse_BlackHole.jpeg"></li>
+        <li><img src="./assets/images/albums/혁오_1집.jpg"></li>
+        <li><img src="./assets/images/albums/GD_2017.webp"></li>
+        <li><img src="./assets/images/albums/Muse_Absolution.jpeg"></li>
+        <li><img src="./assets/images/albums/검정치마_Special.jpg"></li>
+        <li><img src="./assets/images/albums/잔나비_SeeYourEyes.jpg"></li>
       </ul>
-      
-  
-      <ul class="bannerList" id="banner2">
-        <li><img src="./images/Luke_WhenFacing.jpeg"></li>
-        <li><img src="./images/Muse_BlackHole.jpeg"></li>
-        <li><img src="./images/혁오_1집.jpg"></li>
-        <li><img src="./images/GD_2017.webp"></li>
-        <li><img src="./images/Muse_Absolution.jpeg"></li>
-        <li><img src="./images/검정치마_Special.jpg"></li>
-        <li><img src="./images/잔나비_SeeYourEyes.jpg"></li>
-      </ul>
-      
-    </div>
-
     
+      <ul class="bannerList" id="banner2">
+        <li><img src="./assets/images/albums/Luke_WhenFacing.jpeg"></li>
+        <li><img src="./assets/images/albums/Muse_BlackHole.jpeg"></li>
+        <li><img src="./assets/images/albums/혁오_1집.jpg"></li>
+        <li><img src="./assets/images/albums/GD_2017.webp"></li>
+        <li><img src="./assets/images/albums/Muse_Absolution.jpeg"></li>
+        <li><img src="./assets/images/albums/검정치마_Special.jpg"></li>
+        <li><img src="./assets/images/albums/잔나비_SeeYourEyes.jpg"></li>
+      </ul>
+    </div>
   </main>
 
   <footer>
@@ -68,10 +67,6 @@
       <br>
       솝트 웹 파트 화이팅 !
     </p>
-    
-
   </footer>
-  <!--type="module"을 해줘야만 해당 스크립트에서 ES6 import문을 사용할 수 있다-->
-  <script type="module" src="./index.js"></script> <!--js연결은 어디가 좋을까?-->
 </body>
 </html>

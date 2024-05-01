@@ -1,34 +1,34 @@
-const ITEM_LIST_KEY = "itemList";
 //장바구니(cart)페이지 구현 - 로컬 스토리지 활용
+const ITEM_LIST_KEY = "itemList";
 const cartBody = document.getElementById('cartBody');
+//만약 falsy한 값이면 빈 배열 할당 (단축 평가를 이용한 코드 - 한번 연습해봄.)
+const storageItems = JSON.parse(localStorage.getItem(ITEM_LIST_KEY)) || []; 
 
-const storageItems = localStorage.getItem(ITEM_LIST_KEY);
-const parsedItems = JSON.parse(storageItems); //localStorage에서 가져온 아이템
-
-function deleteGrandParent(e)
+function deleteCartItem(e)
 {
-  const grandParent = (e.currentTarget.parentNode).parentNode;
+  //closest 적용해봄 ! //const removedItem = (e.currentTarget.parentNode).parentNode; 와 같이 접근 안해도 됨
+  const removedItem = e.currentTarget.closest("tr"); //선택자를 통해, 해당 선택자를 가진 가장 가까운 조상 요소를 가져옴!
+  
   //해당 노드의 id를 확인하여, 
   //로컬 스토리지에 저장된 객체 배열들의 요소들 중,
   //같은 id를 갖는 객체를 cart = false; 설정해주기.
-  parsedItems[grandParent.id -1].cart = false;
-  parsedItems[grandParent.id -1].userCart = false; //처음엔 이거 안해줬는데, 삭제 후 추가하니 자동 체크되는 상황 발생하여 수정함
+  storageItems[removedItem.id -1].cart = false;
+  storageItems[removedItem.id -1].userCart = false; //처음엔 이거 안해줬는데, 삭제 후 추가하니 자동 체크되는 상황 발생하여 수정함
   //그 후, 다시 로컬스토리지도 갱신
-  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(storageItems));
 
-  grandParent.remove(); //조부모 삭제
+  removedItem.remove(); //조부모 삭제
 }
 
 /* 로컬 스토리지에서 값을 가져와서, 체크 박스 체크 해주는 함수*/
-function initSelect()
+function initChecked()
 {
-  console.log("init실행");
-  const initParsedItems = JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
+  const initstorageItems = JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
   //로컬 스토리지 기록으로 체크 해줄 checkbox들 전부 가져옴
   const checkboxes = document.querySelectorAll("#cartBody input[type ='checkbox']") //cartbody에 있는 모든 checkbox 타입의 input을 배열로 가져옴
   checkboxes.forEach((box)=>{
-    const grandNode = box.parentElement.parentElement;
-    if(initParsedItems[grandNode.id -1].userCart === true) //userCart 즉, 체크여부
+    const trNode = box.closest("tr"); 
+    if(initstorageItems[trNode.id -1].userCart === true) //userCart 즉, 체크여부
     {
       box.checked = true; //이건 그냥 check로만 만들어주는 것! (그래서 신경쓸 게 생각보다 없음)
     }
@@ -36,26 +36,21 @@ function initSelect()
 }
 
 
-
-
-
-function selected(e)
+function bindingChecked(e)
 {
-  const grandParent = (e.currentTarget.parentNode).parentNode;
-  if(e.currentTarget.checked) //체크 되어있는지 확인(boolean값임)
-  {
-    parsedItems[grandParent.id -1].userCart = true;
-  }
-  else{ //체크 안되어 있으면(혹은 체크 해제했으면)
-    parsedItems[grandParent.id -1].userCart = false;
-  }
+  const removedItem = (e.currentTarget.parentNode).parentNode;
+  //체크 되어있는지 확인(boolean값임) - if,else문이 아닌 삼항 연산자로 표현
+  e.currentTarget.checked ? 
+  storageItems[removedItem.id -1].userCart = true : 
+  storageItems[removedItem.id -1].userCart = false
+  
   //로컬 스토리지에 갱신
-  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+  localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(storageItems));
 }
 
-function paintCart(obj)
+function paintCartObj(obj)
 {
-  if(obj.cart === true)
+  if(obj.cart)
   {
     const tr = document.createElement("tr");
     tr.id = obj.id; //나중에 삭제, 구매 확정에 사용될 예정
@@ -66,14 +61,14 @@ function paintCart(obj)
     input.setAttribute("type", "checkbox");
     
 
-    input.addEventListener("change", selected) //값이 변할경우 이벤트리스너(체크 여부)
+    input.addEventListener("change", bindingChecked) //값이 변할경우 이벤트리스너(체크 여부 반영)
     td1.appendChild(input);
     tr.appendChild(td1);
 
     // 두번째 열 생성 (이미지)
     const td2 = document.createElement("td");
     const img = document.createElement("img");
-    img.setAttribute("src", obj.img);
+    img.setAttribute("src", "../../" + obj.img);
     td2.appendChild(img);
     tr.appendChild(td2);
 
@@ -97,7 +92,7 @@ function paintCart(obj)
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "삭제";
     deleteBtn.classList.add("deleteBtn"); //추후 클래스 적용을 위해
-    deleteBtn.addEventListener("click", deleteGrandParent); //행을 삭제할 수 있도록 이벤트 핸들러 부착.
+    deleteBtn.addEventListener("click", deleteCartItem); //행을 삭제할 수 있도록 이벤트 핸들러 부착.
     td6.appendChild(deleteBtn);
     tr.appendChild(td6);
 
@@ -106,30 +101,28 @@ function paintCart(obj)
   }
 }
 
- 
 //이제 로컬스토리지에서 가져온 걸 순회하면서, 테이블에 작성할 예정
-
-function deleteCart(){ //그 전에, 렌더링 전에 존재하는 걸 삭제하는 로직 필요(필수,중요)
+function deleteCartObj(){ //그 전에, 렌더링 전에 존재하는 걸 삭제하는 로직 필요(필수,중요)
   const cartBody = document.getElementById("cartBody");
   while(cartBody.firstChild){ 
     cartBody.removeChild(cartBody.firstChild);
   }
 }
 
-function renderCart()
+function renderCart() //deleteCartObj + (모든 상품 중에서, obj.cart === true인 상품만) paintCartObj 적용
 {
-  deleteCart();
+  deleteCartObj();
   const savedItemList = localStorage.getItem(ITEM_LIST_KEY); 
   console.log(savedItemList);
   if(savedItemList !== null) //로컬 스토리지에서 가져온 게 비어있는게 아니라면
   {
     const parsedItemList = JSON.parse(savedItemList); //다시 js오브젝트로 변환
-    parsedItemList.forEach(paintCart);
+    parsedItemList.forEach(paintCartObj);
   }
 }
 
 renderCart();
-initSelect(); //이거 위치도 중요함. 당연히 paint된 이후에 진행해야 함!
+initChecked(); //이거 위치도 중요함. 당연히 paint된 이후에 진행해야 함!
 
 //allCheck버튼 누를 때, 다른 체크 박스들 전부 체크로 변경
 const allCheckFunc = (e) => {
@@ -146,23 +139,26 @@ const allCheckFunc = (e) => {
       // 따라서 원하는대로 input에 달린 change 이벤트 리스너가 호출되지 않는다.
       // 그래서, 결국 직접 조부모 노드를 찾아가서, 해당 노드의 id로 객체를 찾은다음
       // 해당 객체의 userCart를 직접 갱신해주는 로직을 추가해주어 해결했다!!
-      parsedItems[(box.parentElement.parentElement).id - 1].userCart = true; //됐다!!!!!!!!!!!!!!
+      storageItems[(box.parentElement.parentElement).id - 1].userCart = true; //됐다!!!!!!!!!!!!!!
     })
 
-    localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+    localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(storageItems));
 
   }
   else{ //체크 안되어 있으면(혹은 체크 해제했으면)
     //모든 체크 버튼들 체크 해제
     checkboxes.forEach((box)=>{
       box.checked = false;
-      parsedItems[(box.parentElement.parentElement).id - 1].userCart = false;
+      storageItems[(box.parentElement.parentElement).id - 1].userCart = false;
     })
 
-    localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(parsedItems));
+    localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(storageItems));
 
   }
 }
+
+
+//*************** 모달 구현 부분 ***************
 
 //모달 열고 닫는 로직 구성
 const allCheck = document.querySelector("#allCheck");
@@ -182,11 +178,9 @@ closeBuyModal.addEventListener("click", ()=>{
   buyModalWrapper.style.display = "none"; 
 });
 
-
-//이제 모달만 구현하면 끝!!!!!!!!
-const modalContent = document.querySelector("#modalContent");
 function paintModalItem(obj)
 {  
+  const modalContent = document.querySelector("#modalContent");
   //0. 아이템 틀 연결
   const div = document.createElement("div") ;
   div.classList.add("rowFlexDiv");
@@ -194,7 +188,7 @@ function paintModalItem(obj)
 
   // 1. 이미지 연결
   const img = document.createElement("img");
-  img.setAttribute("src", obj.img);
+  img.setAttribute("src", "../../" + obj.img);
   div.appendChild(img);
 
   // 2. 상품 카테고리 , 이름, 가격 설정 및 연결
@@ -222,6 +216,7 @@ function paintModalItem(obj)
  //그리고 총 가격 계산
 function deleteBuyList()
 {
+  const modalContent = document.querySelector("#modalContent");
   while(modalContent.firstChild){ //만약 모달콘텐츠 박스 안에 첫번째 자식이 존재하면
     (modalContent.firstChild).remove(); //다 없어질 때까지 차근 차근 요소 삭제
     //혹은 modalContent.removeChild(modalContent.firstChild); 을 통해서도 삭제가 가능하다.
@@ -233,13 +228,12 @@ function renderBuyList() {
   //따라서 처음에 기존 렌더링 여부 확인 후, 렌더링 되어 있으면 삭제하는 로직 필요
   deleteBuyList(); //필수!
 
-  const  NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
+  const NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
 
-  const nowUserCart = NowAllObjs.filter((obj) => {
-    return (obj.userCart === true);
-  });
+  const nowUserCart = NowAllObjs.filter(obj => (obj.userCart === true));
   nowUserCart.forEach(paintModalItem);
 
+  /*
   //가격만 뽑아내어 새로운 배열 만듬
   let allPrice = 0;
   const priceArr = nowUserCart.map((obj) => obj.price);  
@@ -247,6 +241,8 @@ function renderBuyList() {
   {
     allPrice += aPrice;
   }
+  */
+  let allPrice = nowUserCart.reduce((accPrice, cur) => accPrice + cur.price, 0) // init : 0, accPrice: 값이 누적될 곳, cur: 현재 돌고 있는 배열의 요소, cur.price: 그 요소의 가격값
   const totalPrice = document.getElementById("totalPrice");
   totalPrice.textContent = allPrice.toLocaleString();
 
@@ -257,11 +253,7 @@ buyBtn.addEventListener("click", renderBuyList);
 
 //마지막! 결제하기 버튼을 클릭 시 alert 뜨고 장바구니에서 삭제하기
 const payBtn = document.getElementById("payBtn");
-payBtn.addEventListener("click", ()=>{
-  alert("주문 완료!");
-})
 
-//아직 수정할 점들: 구매 모달 꺼지게 하는거 필요.
 const payFunc = (e) => {
   const  NowAllObjs= JSON.parse(localStorage.getItem(ITEM_LIST_KEY));
   const nowUserCart = NowAllObjs.filter((obj) => {
@@ -277,13 +269,14 @@ const payFunc = (e) => {
   }
   localStorage.setItem(ITEM_LIST_KEY, JSON.stringify(NowAllObjs)); //로컬 스토리지에 갱신
   renderCart();
-  initSelect();
+  initChecked();
 
   //구매창 닫기
   const buyModalWrapper = document.getElementById("buyModalWrapper");
   buyModalWrapper.style.display = "none"; 
 }
 
+payBtn.addEventListener("click", ()=>{
+  alert("주문 완료!");
+})
 payBtn.addEventListener("click", payFunc);
-
-//userCart엔 이미 삭제된 게 .......남아있는 문제 발생
